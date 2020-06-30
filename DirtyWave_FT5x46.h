@@ -77,9 +77,9 @@ public:
    capacitive touch chips
 */
 /**************************************************************************/
-class Adafruit_FT6206 {
+class DirtyWave_FT5x46 {
 public:
-  Adafruit_FT6206(void);
+  DirtyWave_FT5x46(void);
   boolean begin(uint8_t thresh = FT62XX_DEFAULT_THRESHOLD);
   uint8_t touched(void);
   TS_Point getPoint(uint8_t n = 0);
@@ -95,4 +95,4 @@ private:
   uint16_t touchX[2], touchY[2], touchID[2];
 };
 
-#endif // ADAFRUIT_FT6206_LIBRARY
+#endif

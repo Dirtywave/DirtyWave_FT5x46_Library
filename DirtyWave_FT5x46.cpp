@@ -35,7 +35,7 @@
 */
 /**************************************************************************/
 // I2C, no address adjustments or pins
-Adafruit_FT6206::Adafruit_FT6206() { touches = 0; }
+DirtyWave_FT5x46::DirtyWave_FT5x46() { touches = 0; }
 
 /**************************************************************************/
 /*!
@@ -46,7 +46,7 @@ Adafruit_FT6206::Adafruit_FT6206() { touches = 0; }
     @returns True if an FT6206 is found, false on any failure
 */
 /**************************************************************************/
-boolean Adafruit_FT6206::begin(uint8_t thresh) {
+boolean DirtyWave_FT5x46::begin(uint8_t thresh) {
   Wire1.begin();
 
 #ifdef FT6206_DEBUG
@@ -91,7 +91,7 @@ boolean Adafruit_FT6206::begin(uint8_t thresh) {
     @returns Number of touches detected, can be 0, 1 or 2
 */
 /**************************************************************************/
-uint8_t Adafruit_FT6206::touched(void) {
+uint8_t DirtyWave_FT5x46::touched(void) {
   uint8_t n = readRegister8(FT62XX_REG_NUMTOUCHES);
   if (n > 2) {
     n = 0;
@@ -110,9 +110,9 @@ uint8_t Adafruit_FT6206::touched(void) {
    currently touched.
 */
 /**************************************************************************/
-TS_Point Adafruit_FT6206::getPoint(uint8_t n) {
+TS_Point DirtyWave_FT5x46::getPoint(uint8_t n) {
   readData();
-  if ((touches == 0) || (n > 1)) {
+  if ((touches == 0) || (n > 10)) {
     return TS_Point(0, 0, 0);
   } else {
     return TS_Point(touchX[n], touchY[n], 1);
@@ -127,7 +127,7 @@ TS_Point Adafruit_FT6206::getPoint(uint8_t n) {
    {@link touchX}, {@link touchY} and {@link touchID} with results
 */
 /**************************************************************************/
-void Adafruit_FT6206::readData(void) {
+void DirtyWave_FT5x46::readData(void) {
 
   uint8_t i2cdat[16];
   Wire1.beginTransmission(FT62XX_ADDR);
@@ -193,7 +193,7 @@ void Adafruit_FT6206::readData(void) {
 #endif
 }
 
-uint8_t Adafruit_FT6206::readRegister8(uint8_t reg) {
+uint8_t DirtyWave_FT5x46::readRegister8(uint8_t reg) {
   uint8_t x;
   // use i2c
   Wire1.beginTransmission(FT62XX_ADDR);
@@ -213,7 +213,7 @@ uint8_t Adafruit_FT6206::readRegister8(uint8_t reg) {
   return x;
 }
 
-void Adafruit_FT6206::writeRegister8(uint8_t reg, uint8_t val) {
+void DirtyWave_FT5x46::writeRegister8(uint8_t reg, uint8_t val) {
   // use i2c
   Wire1.beginTransmission(FT62XX_ADDR);
   Wire1.write((byte)reg);
@@ -224,7 +224,7 @@ void Adafruit_FT6206::writeRegister8(uint8_t reg, uint8_t val) {
 /*
 
 // DONT DO THIS - REALLY - IT DOESNT WORK
-void Adafruit_FT6206::autoCalibrate(void) {
+void DirtyWave_FT5x46::autoCalibrate(void) {
  writeRegister8(FT06_REG_MODE, FT6206_REG_FACTORYMODE);
  delay(100);
  //Serial.println("Calibrating...");
